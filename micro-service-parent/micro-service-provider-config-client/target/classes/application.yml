@@ -1,8 +1,0 @@
-#此处application.yml的内容可配可不配
-
-#server:
-#    port: 9024
-
-spring: 
-    application: 
-        name: micro-service-provider-config-client    #微服务的名称  ; 配置中心的配置文件命名要按照规范“服务名-环境名”

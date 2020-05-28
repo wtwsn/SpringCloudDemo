@@ -1,9 +1,0 @@
-server: 
-    port: 9030
-    
-eureka: 
-    client: 
-        register-with-eureka: false     #消费者不注册到注册中心
-        #未配置fetch-registry: false，则默认为true即允许从注册中心获取微服务列表
-        service-url: 
-            defaultZone: http://eureka-server:9010/eureka/,http://eureka-server1:9011/eureka/,http://eureka-server2:9012/eureka/
