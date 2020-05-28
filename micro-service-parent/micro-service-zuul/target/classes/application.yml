@@ -1,0 +1,31 @@
+server: 
+    port: 9001 
+#我他妈锤死我自己，port写成prot！！！浪费我一上午找问题！！！
+#springboot就会认为没有配置端口，采用默认的8080。 这个问题还是在eureka指了指zuul微服务的信息显示才发现端口没配置上!!!
+    
+spring: 
+    application: 
+        name: micro-service-zuul
+
+eureka: 
+     client:
+         service-url: 
+             defaultZone: http://eureka-server:9010/eureka/,http://eureka-server1:9011/eureka/,http://eureka-server2:9012/eureka/
+     instance: 
+         instance-id: micro-service-zuul9001    #自定义服务名称后部的简单信息
+         perfer-id-address: true                #点击简单信息可以显示IP地址
+
+#zuul设置网关访问
+zuul: 
+    prefix: /boc     #通过网关访问服务时的前缀
+    ignored-services: micro-service-provider   #需要忽略的真实服务名
+    routes: 
+        mydept.serviceId: micro-service-provider    #将要设置别名的服务真实名
+        mydept.path: /provider/**                   #访问服务时的新别名
+#整个配置文件中无论是哪里都不能带有tab制表符
+
+info: 
+    app.name: micro-service-zuul
+    company.name: com.nuwnta.tansun
+    build.artifactId: micro-service-zuul
+    build.version: 0.0.1-SNAPSHOT

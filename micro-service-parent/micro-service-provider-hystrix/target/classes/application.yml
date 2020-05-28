@@ -1,0 +1,43 @@
+server: 
+    port: 9023
+
+mybatis: 
+    #mybatis配置文件的路径
+    config-location: "classpath:config/mybatis-cfg.xml"
+    #mapper映射文件的位置   -代表是list集合中的一个元素
+    mapper-locations: 
+        - "classpath:com/nuwnta/tansun/provider/dao/**/*.xml"
+    #别名类所在的包
+    type-aliases-package: com.nuwnta.tansun.public0.entity
+
+spring: 
+  application: 
+    name: micro-service-provider                          #微服务的名字; 配成集群时需要保持此应用名一致。
+  datasource: 
+    driver-class-name: org.gjt.mm.mysql.Driver                # mysql驱动包      
+    type: com.alibaba.druid.pool.DruidDataSource              # 当前数据源操作类型
+    url: "jdbc:mysql://localhost:3306/springcloud"                    # 数据库名称
+    username: root
+    password: root
+    dbcp2: 
+      initial-size: 5                                         # 初始化连接数
+      max-total: 5                                            # 最大连接数
+      max-wait-millis: 200                                    # 等待连接获取的最大超时时间
+      min-idle: 5                                             # 数据库连接池的最小维持连接数
+  
+eureka: 
+    client: 
+        service-url: 
+            #defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
+            #defaultZone: http://localhost:9010/eureka/,http://localhost:9011/eureka/,http://localhost:9012/eureka/
+            defaultZone: http://eureka-server:9010/eureka/,http://eureka-server1:9011/eureka/,http://eureka-server2:9012/eureka/
+    instance: 
+        instance-id: micro-service-provider-hystrix9023             #自定义服务名称后部的简单信息
+        perfer-id-address: true                             #点击简单信息可以显示IP地址
+
+#用于在eureka的查询页面显示微服务的自定义的版本信息
+info: 
+    app.name: micro-service-provider
+    company.name: com.nuwnta.tansun
+    build.artifactId: micro-service-provider-hystrix
+    build.version: 0.0.1-SNAPSHOT

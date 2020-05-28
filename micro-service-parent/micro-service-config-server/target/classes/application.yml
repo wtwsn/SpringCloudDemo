@@ -1,0 +1,37 @@
+# 注册服务的端口
+server:
+  port: 9002
+  
+spring:
+  application:
+    name: micro-service-config-server #配置服务名称
+  profiles:
+    active: native    #设置为本地启动的方式，而不是通过git
+  cloud:
+    config:
+      server:
+        native:
+          #配置相对路径后，每次修改配置文件都要重启config-server后（因为配置文件们都已经编译进包里了），才能通过访问  /actuator/bus-refresh来动态刷新其它所有配置中心客户端的配置文件。
+          #searchLocations: classpath:/config   # 配置文件所在目录，classpath（类路径）和（系统文件路径） file两种
+          #配置  config-server所在主机的绝对路径，则可以实现 不重启config-server便可以通过访问  /actuator/bus-refresh来动态刷新其它所有配置中心客户端的配置文件。
+          searchLocations: E:/workspace/eclipse_workspace/micro-service-parent/micro-service-config-server/src/main/resources/config
+  #rabbitmq连接     bus总线与mq消息队列结合形成消息总线  ； 配置中心客户端的代码里动态获取配置文件中的值要配合@RefreshScope使用
+  #配置中心客户端的微服务要在bootstrap.yml中配置rabbitmq的连接。配置中心服务端是在application.yml中配置
+  rabbitmq: 
+      host: localhost
+      port: 5672
+      username: guest
+      password: guest
+
+#暴露全部的监控信息    （决定了当前项目作为承担 动态刷新配置 的角色，  通过post方式访问/actuator/bus-refresh）
+management: 
+    security: 
+        enabled: false
+#    endpoints: 
+#        web: 
+#            exposure: 
+#                include: "*"   
+
+#配置中心服务器不需要配置微服务的注册中心地址   
+
+  

@@ -1,0 +1,27 @@
+0.端口分配规则:
+
+  9000  Hystrix监控仪表盘    
+  9001  zuul路由
+  9002  本地配置中心
+  
+  901* 注册中心
+  902* 服务提供者
+  903* 服务消费者
+
+1.每次修改某一个maven项目的pom后都要 maven update
+
+2.最绝最统一个更新配置方式，  
+对parent项目 maven update，
+再选中 working set选择project clean，重新编译所有微服务项目。
+
+3.maven clean是真的clean，是没有编译后文件的，运行项目会报找不到主类。
+而eclispe的 project clean会重新编译。
+两者是不一样的。
+
+4.改项目名称要改4处(本项目2个，父项目2个)：   1）项目的名字   
+				2）项目的pom的artifactId标签  
+				3） parent父工程pom文件中对应的moudle标签
+				4）parent父工程下对应项目文件夹的名字
+				
+5.微服务的启动顺序最好是: 注册中心 -> 服务提供者 -> 服务消费者
+

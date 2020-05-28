@@ -1,0 +1,79 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>com.nuwnta.tansun</groupId>
+    <artifactId>micro-service-parent</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+  </parent>
+  <artifactId>micro-service-zuul</artifactId>
+  	<dependencies>
+		<!-- zuul路由网关 -->
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-eureka</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-zuul</artifactId>
+		</dependency>
+		<!-- 健康监控器  ；  用于在eureka的查询页面显示微服务的自定义版本信息，使页面可以访问yml中info属性写好的信息，并返回给页面展示。-->
+     	<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-actuator</artifactId>
+		</dependency>
+		<!-- 修改后立即生效，热部署 ;父工程的spring-boot-dependencies已经包含，不需要再在parent的pom中定义。-->
+		<!-- 热部署依赖会导致在springboot启动类执行时，打印两遍自定义的star提示输出 -->
+<!-- 		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>springloaded</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-devtools</artifactId>
+		</dependency> -->
+	</dependencies>
+	
+	<build>
+		<!--表明将配置文件也一并打入包中； 用于在eureka的查询页面显示微服务的自定义版本信息，实现yml文件动态获取pom中的信息；-->
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				 <!-- 开启过滤 -->
+				<filtering>true</filtering>
+			</resource>
+		</resources> 
+		<plugins>
+			<!-- 设置项目jdk的版本 -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>1.8</source>
+					<target>1.8</target>
+					<encoding>UTF-8</encoding>
+				</configuration>
+			</plugin>
+			<!-- 打包跳过test -->
+			<plugin>
+	            <artifactId>maven-surefire-plugin</artifactId>
+	            <configuration>
+	                <skip>true</skip>
+	            </configuration>
+	        </plugin>
+	        <!-- 控制加载/读取配置文件中属性的方式 ； 用于在eureka的查询页面显示微服务的自定义版本信息，实现yml文件动态获取pom中的信息 -->
+	        <plugin>
+	         	<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-resources-plugin</artifactId>
+				<configuration>
+					<delimiters>
+					    <!-- 指定过滤的表达式   ;从yml文件中用$开头和结尾的表达式来读取pom文件中的标签属性； -->
+						<delimit>$</delimit>
+					</delimiters>
+						<!-- 用此插件一定要加此属性设置，否则maven默认以gbk编译配置文件 -->
+						<encoding>UTF-8</encoding>
+				</configuration>
+			</plugin>
+		</plugins>	
+   </build>
+	
+</project>

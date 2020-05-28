@@ -1,0 +1,121 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>com.nuwnta.tansun</groupId>
+    <artifactId>micro-service-parent</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+  </parent>
+  
+  <artifactId>micro-service-provider</artifactId>
+  
+  <dependencies>
+  		<!-- 公共微服务  需要先将其打包发布到maven仓库 -->
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>micro-service-public</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.alibaba</groupId>
+			<artifactId>druid</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-core</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.mybatis.spring.boot</groupId>
+			<artifactId>mybatis-spring-boot-starter</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-jetty</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+		</dependency>
+		<!-- 将微服务注册进eureka注册中心 -->
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-eureka</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-config</artifactId>
+		</dependency>
+		<!-- 健康监控器  ；读取配置信息，   用于在eureka的查询页面显示微服务的自定义版本信息，使页面可以访问yml中info属性写好的信息，并返回给页面展示。-->
+     	<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-actuator</artifactId>
+		</dependency>
+		<!-- 热部署   父工程的spring-dependencis中包含着这两依赖，不用在父工程的pom中声明-->
+		<!-- 热部署依赖会导致在springboot启动类执行时，打印两遍自定义的star提示输出 -->
+<!-- 		<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>springloaded</artifactId>
+		</dependency>
+		<dependency>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-devtools</artifactId>
+		</dependency> -->
+	</dependencies>
+	
+    <build>
+        <!--  定义了编译、打包、部署的最终项目名称  ； 默认包名是<artifactId>+<version>的拼接。这里没带包的版本号 -->
+		<!-- <finalName>micro-service-provider</finalName> -->
+		<!--表明将配置文件也一并打入包中； 用于在eureka的查询页面显示微服务的自定义版本信息，实现yml文件动态获取pom中的信息；-->
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				 <!-- 开启过滤 -->
+				<filtering>true</filtering>
+			</resource>
+		</resources>  
+		<plugins>
+			<!-- 设置项目jdk的版本 -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>1.8</source>
+					<target>1.8</target>
+					<encoding>UTF-8</encoding>
+				</configuration>
+			</plugin>
+			<!-- 打包跳过test -->
+			<plugin>
+	            <artifactId>maven-surefire-plugin</artifactId>
+	            <configuration>
+	                <skip>true</skip>
+	            </configuration>
+	        </plugin>
+	        <!-- 控制加载/读取配置文件中属性的方式 ； 用于在eureka的查询页面显示微服务的自定义版本信息，实现yml文件动态获取pom中的信息 -->
+	        <plugin>
+	         	<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-resources-plugin</artifactId>
+				<configuration>
+					<delimiters>
+					    <!-- 指定过滤的表达式   ;从yml文件中用$开头和结尾的表达式来读取pom文件中的标签属性； -->
+						<delimit>$</delimit>
+					</delimiters>
+						<!-- 用此插件一定要加此属性设置，否则maven默认以gbk编译配置文件 -->
+						<encoding>UTF-8</encoding>
+				</configuration>
+			</plugin>
+		</plugins>	
+   </build>
+   
+</project>

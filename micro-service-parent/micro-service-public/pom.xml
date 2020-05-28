@@ -1,0 +1,49 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>com.nuwnta.tansun</groupId>
+    <artifactId>micro-service-parent</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+  </parent>
+  <artifactId>micro-service-public</artifactId>
+  
+  <dependencies><!-- 当前Module需要用到的jar包，按自己需求添加，如果父类已经包含了，可以不用写版本号 -->
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+		</dependency>
+		<!-- 热部署   父工程的spring-dependencis中包含着这两依赖，不用在父工程的pom中声明-->
+		<!-- 热部署依赖会导致在springboot启动类执行时，打印两遍自定义的star提示输出。但好在public项目只作为包被调用，不需要执行。 -->
+<!-- 		<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>springloaded</artifactId>
+		</dependency>
+		<dependency>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-devtools</artifactId>
+		</dependency> -->
+  </dependencies>
+  
+  <build>
+		<plugins>
+			<!-- 设置项目jdk的版本 -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>1.8</source>
+					<target>1.8</target>
+					<encoding>UTF-8</encoding>
+				</configuration>
+			</plugin>
+			<!-- 打包跳过test -->
+			<plugin>
+	            <artifactId>maven-surefire-plugin</artifactId>
+	            <configuration>
+	                <skip>true</skip>
+	            </configuration>
+	        </plugin>
+		</plugins>	
+   </build>
+
+</project>
